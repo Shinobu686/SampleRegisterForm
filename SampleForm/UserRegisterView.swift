@@ -33,10 +33,10 @@ struct UserRegisterView: View {
                     .fontWeight(.bold)
                     .frame(width: screenWidth / 1.5, height: screenWidth / 7)
                     .font(.title2)
-                    .background(Color(#colorLiteral(red: 0.2610365748, green: 0.6647360325, blue: 0.5856692791, alpha: 1)))
+                    .background(name.isEmpty || password.isEmpty ? Color.gray : Color(#colorLiteral(red: 0.2610365748, green: 0.6647360325, blue: 0.5856692791, alpha: 1)))
                     .foregroundColor(.white)
                     .cornerRadius(20)
-            }
+            }.disabled(name.isEmpty || password.isEmpty)
         }.frame(minWidth: 0,
                 maxWidth: .infinity,
                 minHeight: 0,
