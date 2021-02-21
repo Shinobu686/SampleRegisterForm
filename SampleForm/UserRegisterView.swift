@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import RealmSwift
 
 struct UserRegisterView: View {
     
@@ -27,6 +28,16 @@ struct UserRegisterView: View {
             }
             
             Button(action: {
+                
+                let user = User()
+                user.name = name
+                user.password = password
+                
+                let realm = try! Realm()
+                try! realm.write {
+                    realm.add(user)
+                }
+                print(Realm.Configuration.defaultConfiguration.fileURL!)
                 
             }) {
                 Text("登録")
