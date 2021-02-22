@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import RealmSwift
 
 struct UserRegisterView: View {
     
@@ -27,6 +28,10 @@ struct UserRegisterView: View {
             }
             
             Button(action: {
+                let realm = try! Realm()
+                try! realm.write {
+                    realm.add(User(value: ["name": name, "password": password]))
+                }
                 
             }) {
                 Text("登録")
