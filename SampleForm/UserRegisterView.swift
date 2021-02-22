@@ -28,16 +28,10 @@ struct UserRegisterView: View {
             }
             
             Button(action: {
-                
-                let user = User()
-                user.name = name
-                user.password = password
-                
                 let realm = try! Realm()
                 try! realm.write {
-                    realm.add(user)
+                    realm.add(User(value: ["name": name, "password": password]))
                 }
-                print(Realm.Configuration.defaultConfiguration.fileURL!)
                 
             }) {
                 Text("登録")
