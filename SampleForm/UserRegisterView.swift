@@ -12,6 +12,7 @@ struct UserRegisterView: View {
     
     @State var name = ""
     @State var password = ""
+    @State var alertItem: AlertItem?
     
     var screenWidth = UIScreen.main.bounds.width
     
@@ -28,11 +29,26 @@ struct UserRegisterView: View {
             }
             
             Button(action: {
-                let realm = try! Realm()
-                try! realm.write {
-                    realm.add(User(value: ["name": name, "password": password]))
-                }
                 
+                self.alertItem = AlertItem(
+                    title: Text("確認メッセージ"),
+                    message: Text("登録してもよろしいですか？"),
+                    primaryButton: .default(Text("OK"), action: {
+                        let realm = try! Realm()
+                        print(Realm.Configuration.defaultConfiguration.fileURL!)
+                        try! realm.write {
+                            realm.add(User(value: ["name": name, "password": password]))
+                        }
+                        
+                        self.alertItem = AlertItem(
+                            title: Text("確認メッセージ"),
+                            message: Text("登録が完了しました"),
+                            dismissButton: .cancel(Text("OK")))
+                    }),
+                    secondaryButton: .cancel(Text("キャンセル"), action: {
+                        return
+                    })
+                )
             }) {
                 Text("登録")
                     .fontWeight(.bold)
@@ -42,11 +58,30 @@ struct UserRegisterView: View {
                     .foregroundColor(.white)
                     .cornerRadius(20)
             }.disabled(name.isEmpty || password.isEmpty)
-        }.frame(minWidth: 0,
-                maxWidth: .infinity,
-                minHeight: 0,
-                maxHeight: .infinity,
-                alignment: .center)
+        }
+        .alert(item: $alertItem) {alertItem in
+            var alertObj: Alert = Alert(
+                title: alertItem.title,
+                message: alertItem.message,
+                dismissButton: alertItem.dismissButton
+            )
+            
+            if alertItem.dismissButton == nil {
+                alertObj = Alert(
+                    title: alertItem.title,
+                    message: alertItem.message,
+                    primaryButton: alertItem.primaryButton!,
+                    secondaryButton: alertItem.secondaryButton!
+                )
+            }
+            return alertObj
+        }
+        
+        .frame(minWidth: 0,
+               maxWidth: .infinity,
+               minHeight: 0,
+               maxHeight: .infinity,
+               alignment: .center)
         .background(Color(#colorLiteral(red: 0.4960951805, green: 0.7146345377, blue: 0.9368119836, alpha: 1)))
         .edgesIgnoringSafeArea(.all)
     }
