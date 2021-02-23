@@ -35,7 +35,6 @@ struct UserRegisterView: View {
                     message: Text("登録してもよろしいですか？"),
                     primaryButton: .default(Text("OK"), action: {
                         let realm = try! Realm()
-                        print(Realm.Configuration.defaultConfiguration.fileURL!)
                         try! realm.write {
                             realm.add(User(value: ["name": name, "password": password]))
                         }
