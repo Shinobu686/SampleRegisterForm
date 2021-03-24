@@ -12,7 +12,7 @@ struct UserRegisterView: View {
     
     @State var name = ""
     @State var password = ""
-    @State var alertItem: AlertItem?
+    @State var alertType: AlertType?
     
     var screenWidth = UIScreen.main.bounds.width
     
@@ -29,24 +29,29 @@ struct UserRegisterView: View {
             }
             
             Button(action: {
-                
-                self.alertItem = AlertItem(
-                    title: Text("確認メッセージ"),
-                    message: Text("登録してもよろしいですか？"),
-                    primaryButton: .default(Text("OK"), action: {
-                        let realm = try! Realm()
-                        try! realm.write {
-                            realm.add(User(value: ["name": name, "password": password]))
+                self.alertType = AlertType.select(
+                    title: "確認メッセージ",
+                    message: "登録してもよろしいですか？",
+                    primaryButton: .default(Text("OK")) {
+                        
+                        do {
+                            try User.create(name: name, password: password)
+                        } catch {
+                            self.alertType = AlertType.failure(title: "エラーメッセージ",
+                                                               message: "登録に失敗しました",
+                                                               dismissButton: .cancel(Text("OK")))
                         }
                         
-                        self.alertItem = AlertItem(
-                            title: Text("確認メッセージ"),
-                            message: Text("登録が完了しました"),
-                            dismissButton: .cancel(Text("OK")))
-                    }),
-                    secondaryButton: .cancel(Text("キャンセル"), action: {
-                        return
-                    })
+                        self.alertType = AlertType.complete(
+                            title: "確認メッセージ",
+                            message: "登録が完了しました",
+                            dismissButton: .cancel(Text("OK")) {
+                                self.name = ""
+                                self.password = ""
+                            }
+                        )
+                    },
+                    secondaryButton: .cancel()
                 )
             }) {
                 Text("登録")
@@ -58,24 +63,9 @@ struct UserRegisterView: View {
                     .cornerRadius(20)
             }.disabled(name.isEmpty || password.isEmpty)
         }
-        .alert(item: $alertItem) {alertItem in
-            var alertObj: Alert = Alert(
-                title: alertItem.title,
-                message: alertItem.message,
-                dismissButton: alertItem.dismissButton
-            )
-            
-            if alertItem.dismissButton == nil {
-                alertObj = Alert(
-                    title: alertItem.title,
-                    message: alertItem.message,
-                    primaryButton: alertItem.primaryButton!,
-                    secondaryButton: alertItem.secondaryButton!
-                )
-            }
-            return alertObj
+        .alert(item: $alertType) { alertType in
+            alertType.alert
         }
-        
         .frame(minWidth: 0,
                maxWidth: .infinity,
                minHeight: 0,
