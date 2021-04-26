@@ -12,59 +12,51 @@ struct UserRegisterView: View {
     
     @State var name = ""
     @State var password = ""
-    @State var alertType: AlertType?
+    @State var showingAlert = false
+    @State var alertItem: AlertItem?
     
     var screenWidth = UIScreen.main.bounds.width
     
     var body: some View {
-        VStack(spacing: 50) {
-            VStack {
-                TextField("ユーザー名を入力", text: $name)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .frame(width: screenWidth / 1.5)
-                
-                SecureField("パスワードを入力", text: $password)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .frame(width: screenWidth / 1.5)
+        ZStack {
+            VStack(spacing: 50) {
+                VStack {
+                    TextField("ユーザー名を入力", text: $name)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .frame(width: screenWidth / 1.5)
+                    
+                    SecureField("パスワードを入力", text: $password)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .frame(width: screenWidth / 1.5)
+                }
+                VStack {
+                    Button(action: {
+                        showingAlert = true
+                    }) {
+                        Text("登録")
+                            .fontWeight(.bold)
+                            .frame(width: screenWidth / 1.5, height: screenWidth / 7)
+                            .font(.title2)
+                            .background(name.isEmpty || password.isEmpty ? Color.gray : Color(#colorLiteral(red: 0.2610365748, green: 0.6647360325, blue: 0.5856692791, alpha: 1)))
+                            .foregroundColor(.white)
+                            .cornerRadius(20)
+                    }.disabled(name.isEmpty || password.isEmpty)
+                }
+                .alert(isPresented: $showingAlert) {
+                    Alert(title: Text("確認メッセージ"),
+                          message: Text("登録してもよろしいですか？"),
+                          primaryButton: .default(Text("OK")) {
+                            
+                            self.alertItem = User.createJudge(name: name, password: password)
+                          }, secondaryButton: .cancel())
+                }
             }
-            
-            Button(action: {
-                self.alertType = AlertType.select(
-                    title: "確認メッセージ",
-                    message: "登録してもよろしいですか？",
-                    primaryButton: .default(Text("OK")) {
-                        
-                        do {
-                            try User.create(name: name, password: password)
-                        } catch {
-                            self.alertType = AlertType.failure(title: "エラーメッセージ",
-                                                               message: "登録に失敗しました",
-                                                               dismissButton: .cancel(Text("OK")))
-                        }
-                        
-                        self.alertType = AlertType.complete(
-                            title: "確認メッセージ",
-                            message: "登録が完了しました",
-                            dismissButton: .cancel(Text("OK")) {
-                                self.name = ""
-                                self.password = ""
-                            }
-                        )
-                    },
-                    secondaryButton: .cancel()
-                )
-            }) {
-                Text("登録")
-                    .fontWeight(.bold)
-                    .frame(width: screenWidth / 1.5, height: screenWidth / 7)
-                    .font(.title2)
-                    .background(name.isEmpty || password.isEmpty ? Color.gray : Color(#colorLiteral(red: 0.2610365748, green: 0.6647360325, blue: 0.5856692791, alpha: 1)))
-                    .foregroundColor(.white)
-                    .cornerRadius(20)
-            }.disabled(name.isEmpty || password.isEmpty)
-        }
-        .alert(item: $alertType) { alertType in
-            alertType.alert
+            Text("")
+                .alert(item: $alertItem) { alertItem in
+                    Alert(title: alertItem.title,
+                          message: alertItem.message,
+                          dismissButton: alertItem.dismissButton)
+                }
         }
         .frame(minWidth: 0,
                maxWidth: .infinity,
