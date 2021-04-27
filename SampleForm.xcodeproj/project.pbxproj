@@ -16,6 +16,7 @@
 		D43A261D25E28D1F00EE1F1F /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = D43A261C25E28D1F00EE1F1F /* Realm */; };
 		D43A261F25E28D1F00EE1F1F /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D43A261E25E28D1F00EE1F1F /* RealmSwift */; };
 		D43A262325E29BEF00EE1F1F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43A262225E29BEF00EE1F1F /* User.swift */; };
+		D43A262825E4ED8B00EE1F1F /* AlertItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43A262725E4ED8B00EE1F1F /* AlertItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		D43A25B925DAA8C500EE1F1F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D43A260825DE276200EE1F1F /* UserRegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRegisterView.swift; sourceTree = "<group>"; };
 		D43A262225E29BEF00EE1F1F /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		D43A262725E4ED8B00EE1F1F /* AlertItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 				D43A25AD25DAA8C300EE1F1F /* SceneDelegate.swift */,
 				D43A260825DE276200EE1F1F /* UserRegisterView.swift */,
 				D43A262225E29BEF00EE1F1F /* User.swift */,
+				D43A262725E4ED8B00EE1F1F /* AlertItem.swift */,
 				D43A25B125DAA8C500EE1F1F /* Assets.xcassets */,
 				D43A25B625DAA8C500EE1F1F /* LaunchScreen.storyboard */,
 				D43A25B925DAA8C500EE1F1F /* Info.plist */,
@@ -162,6 +165,7 @@
 				D43A262325E29BEF00EE1F1F /* User.swift in Sources */,
 				D43A260925DE276200EE1F1F /* UserRegisterView.swift in Sources */,
 				D43A25AC25DAA8C300EE1F1F /* AppDelegate.swift in Sources */,
+				D43A262825E4ED8B00EE1F1F /* AlertItem.swift in Sources */,
 				D43A25AE25DAA8C300EE1F1F /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
